@@ -4,12 +4,15 @@
 <meta charset="UTF-8">
 <title>💖 Valentine?</title>
 
+<!-- Google Font for consistent display -->
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 body {
     margin: 0;
     height: 100vh;
     overflow: hidden;
-    font-family: 'Comic Sans MS', cursive;
+    font-family: 'Comic Neue', cursive;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     display: flex;
     justify-content: center;
@@ -65,12 +68,14 @@ button {
 </div>
 
 <script>
+// RUNAWAY NO BUTTON
 const noBtn = document.getElementById("noBtn");
 noBtn.addEventListener("mouseover", () => {
     noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
     noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
 });
 
+// HEART LETTERS FOR "EVELYN"
 const letters = {
     E: [[0,0],[0,1],[0,2],[1,0],[2,0],[1,1],[1,2]],
     V: [[0,0],[1,1],[2,2],[3,1],[4,0]],
@@ -98,6 +103,7 @@ function createNameHearts() {
 }
 setInterval(createNameHearts, 1500);
 
+// AFTER YES SCREEN WITH PULSING COUNTDOWN
 function sayYes() {
     document.body.innerHTML = `
         <style>
@@ -127,7 +133,7 @@ function sayYes() {
             </p>
             <p style="font-size:19px;">Every second is one closer to you.</p>
             <h2>Until I see you again ✈️💘</h2>
-            <div id="countdown" class="pulse" style="font-size:22px;background:#fff0f3;padding:15px 25px;border-radius:15px;">
+            <div id="countdown" class="pulse" style="font-size:22px;background:#fff0f3;padding:15px 25px;border-radius:15px;position:relative;">
                 Loading...
             </div>
             <p style="margin-top:20px;">March 6, 2026 ❤️</p>
@@ -137,14 +143,27 @@ function sayYes() {
     const targetDate = new Date("March 6, 2026 00:00:00").getTime();
     const el = document.getElementById("countdown");
 
+    function popHeart() {
+        const heart = document.createElement("div");
+        heart.className = "mini-heart";
+        heart.innerHTML = "💖";
+        const rect = el.getBoundingClientRect();
+        heart.style.left = rect.left + rect.width/2 + (Math.random()*40-20) + "px";
+        heart.style.top = rect.top + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 2000);
+    }
+
     setInterval(() => {
         const now = new Date().getTime();
         const d = targetDate - now;
+        if(d < 0) { el.innerHTML = "We’re together now 💖"; return; }
         const days = Math.floor(d / (1000*60*60*24));
         const hours = Math.floor((d % (1000*60*60*24)) / (1000*60*60));
         const minutes = Math.floor((d % (1000*60*60)) / (1000*60));
         const seconds = Math.floor((d % (1000*60)) / 1000);
         el.innerHTML = `${days} days 💕 ${hours} hours<br>${minutes} minutes 💌 ${seconds} seconds`;
+        popHeart();
     }, 1000);
 }
 </script>
